@@ -51,4 +51,28 @@ public class DB
         }
         return null;
     }
+
+    public static int ReturnRows(String SQL)
+    {
+        try
+        {
+            Connection conn=ConnDB();
+            if (conn != null)
+                System.out.println("connection successful");
+            else
+                System.out.println("connection fail");
+
+            Statement stat=conn.createStatement();
+            stat.executeQuery(SQL);
+
+            return stat.getUpdateCount();
+        }
+        catch(Exception e)
+        {
+//            System.out.println("DB.ReadDB-error");
+//            e.printStackTrace();
+        }
+
+        return 0;
+    }
 }

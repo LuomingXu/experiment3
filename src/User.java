@@ -65,4 +65,49 @@ public class User
 
         return null;
     }
+
+    public static boolean SetUserInfo(User user)
+    {
+        String SQL ="insert into StudentTable(StuNo,StuName,Birthday,Gender,School," +
+                "Major,Class,Address,HomePhone,CellPhone) " +
+                "values('"+user.StuNo+"','"+user.StuName+"','"+user.Birthday+"','"+user.Gender+"'," +
+                "'"+user.School+"','"+user.Major+"'," +
+            "'"+user.Class+"','"+user.Address+"','"+user.HomePhone+"','"+user.CellPhone+"')";
+
+        try
+        {
+            int rows=DB.ReturnRows(SQL);
+            if (rows > 0)
+                return true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static boolean UpdateUserInfo(User user)
+    {
+        String SQL ="update StudentTable set StuName='"+user.StuName+"'," +
+                "Birthday='"+user.Birthday+"',Gender='"+user.Gender+"'," +
+                "School='"+user.School+"',Major='"+user.Major+"',Class='"+user.Class+"'," +
+                "Address='"+user.Address+"',HomePhone='"+user.HomePhone+"'," +
+                "CellPhone='"+user.CellPhone+"' " +
+                "where StuNo='"+user.StuNo+"'" ;
+        //System.out.println(SQL);
+        try
+        {
+            int rows=DB.ReturnRows(SQL);
+            if (rows > 0)
+                return true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

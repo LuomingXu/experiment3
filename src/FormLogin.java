@@ -40,14 +40,15 @@ public class FormLogin
                 boolean bool = User.UserConfirm(txtUser.getText(), txtPwd.getText());
                 if (bool)
                 {
-                    JOptionPane.showMessageDialog(mainPanel,"登录成功");
+                    Message.showMessageDialog("登录成功",JOptionPane.OK_OPTION);
                     //isDisposed=true;
                     //frameLogin.dispose();
+                    frameLogin.setVisible(false);
                     FormMain formMain=new FormMain();
                     formMain.main(txtUser.getText());
                 }
                 else
-                    JOptionPane.showMessageDialog(mainPanel,"登录失败");
+                    Message.showMessageDialog("登录失败",JOptionPane.OK_OPTION);
 
             }
         });

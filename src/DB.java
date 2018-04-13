@@ -63,7 +63,7 @@ public class DB
                 System.out.println("connection fail");
 
             Statement stat=conn.createStatement();
-            stat.executeQuery(SQL);
+            stat.executeUpdate(SQL);
 
             return stat.getUpdateCount();
         }

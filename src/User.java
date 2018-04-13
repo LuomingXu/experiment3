@@ -1,3 +1,4 @@
+import javax.annotation.processing.RoundEnvironment;
 import java.sql.ResultSet;
 
 public class User
@@ -12,11 +13,12 @@ public class User
     public String Address=null;
     public String HomePhone=null;
     public String CellPhone=null;
+    public String Age=null;
 
     public static boolean UserConfirm(String UserName, String Pwd)
     {
         String SQL="select count(*) as hang from JavaTest.dbo.StudentTable " +
-                "where UserName='"+UserName+"' and Pwd='"+Pwd+"'";
+                "where StuNo='"+UserName+"' and Pwd='"+Pwd+"'";
 
         try
         {
@@ -37,7 +39,7 @@ public class User
     public static User GetUserInfo(String UserName)
     {
         String SQL="select * from JavaTest.dbo.StudentTable " +
-                "where UserName='"+UserName+"'";
+                "where StuNo='"+UserName+"'";
         User user=new User();
         try
         {
@@ -54,6 +56,7 @@ public class User
                 user.Address=rs.getString("Address");
                 user.HomePhone=rs.getString("HomePhone");
                 user.CellPhone=rs.getString("CellPhone");
+                user.Age=rs.getString("Age");
             }
 
             return user;
@@ -69,15 +72,16 @@ public class User
     public static boolean SetUserInfo(User user)
     {
         String SQL ="insert into StudentTable(StuNo,StuName,Birthday,Gender,School," +
-                "Major,Class,Address,HomePhone,CellPhone) " +
+                "Major,Class,Address,HomePhone,CellPhone,Age) " +
                 "values('"+user.StuNo+"','"+user.StuName+"','"+user.Birthday+"','"+user.Gender+"'," +
                 "'"+user.School+"','"+user.Major+"'," +
-            "'"+user.Class+"','"+user.Address+"','"+user.HomePhone+"','"+user.CellPhone+"')";
+            "'"+user.Class+"','"+user.Address+"','"+user.HomePhone+"','"+user.CellPhone+"'," +
+                "'"+user.Age+"')";
 
         try
         {
             int rows=DB.ReturnRows(SQL);
-            if (rows > 0)
+            if (rows == 1)
                 return true;
         }
         catch(Exception e)
@@ -94,13 +98,13 @@ public class User
                 "Birthday='"+user.Birthday+"',Gender='"+user.Gender+"'," +
                 "School='"+user.School+"',Major='"+user.Major+"',Class='"+user.Class+"'," +
                 "Address='"+user.Address+"',HomePhone='"+user.HomePhone+"'," +
-                "CellPhone='"+user.CellPhone+"' " +
+                "CellPhone='"+user.CellPhone+"',Age='"+user.Age+"' " +
                 "where StuNo='"+user.StuNo+"'" ;
         //System.out.println(SQL);
         try
         {
             int rows=DB.ReturnRows(SQL);
-            if (rows > 0)
+            if (rows == 1)
                 return true;
         }
         catch(Exception e)
@@ -108,6 +112,23 @@ public class User
             e.printStackTrace();
         }
 
+        return false;
+    }
+
+    public static boolean DeleteUser(String StuNo)
+    {
+        String SQL ="delete from StudentTable where StuNo='"+StuNo+"'";
+
+        try
+        {
+            int rows= DB.ReturnRows(SQL);
+            if (rows == 1)
+                return true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
         return false;
     }
 }

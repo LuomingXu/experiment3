@@ -4,65 +4,76 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.sql.Ref;
-import java.text.Normalizer;
 
-public class FormLogin
+public class FormLogin extends JFrame
 {
     public boolean isDisposed=false;
-    private JFrame frameLogin = new JFrame("FormLogin");
+    //private JFrame frameLogin = new JFrame("FormLogin");
 
     FormLogin()
     {
+        InitializeComponent();
         Listener();
     }
 
 
-    public void main()
+//    public void main()
+//    {
+//        frameLogin.setContentPane(new FormLogin().mainPanel);
+//        frameLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+////        frameLogin.setSize(800, 600);用这个没卵用
+//        frameLogin.setPreferredSize(new Dimension(800, 600));
+//        //frameLogin.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 800, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - 600);
+//        frameLogin.setLocationRelativeTo(null);
+//        frameLogin.pack();
+//        frameLogin.setVisible(true);
+//    }
+
+    private void InitializeComponent()
     {
-        frameLogin.setContentPane(new FormLogin().mainPanel);
-        frameLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frameLogin.setSize(800, 600);用这个没卵用
-        frameLogin.setPreferredSize(new Dimension(800, 600));
-        frameLogin.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - 800, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - 600);
-        frameLogin.pack();
-        frameLogin.setVisible(true);
+        this.setContentPane(this.mainPanel);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        this.setSize(800, 600);用这个没卵用
+        this.setPreferredSize(new Dimension(800, 600));
+        this.setLocation(200,200);
+        //this.setLocationRelativeTo(null);
+        this.pack();
+        this.setVisible(true);
+        txtPwd.setEchoChar('*');
     }
 
     private void Listener()
     {
-        btnLogin.addActionListener(new ActionListener()
+        btnLogin.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
                 //User user=new User();//必须new出来, 不然会有一个什么Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException错误...
-                boolean bool = User.UserConfirm(txtUser.getText(), txtPwd.getText());
+                boolean bool = User.UserConfirm(txtUser.getText(), String.valueOf(txtPwd.getPassword()));
                 if (bool)
                 {
                     Message.showMessageDialog("登录成功",JOptionPane.OK_OPTION);
-                    //isDisposed=true;
-                    //frameLogin.dispose();
-                    frameLogin.setVisible(false);
-                    FormMain formMain=new FormMain();
-                    formMain.main(txtUser.getText());
+                    this.setVisible(false);
+                    FormChoice choice=new FormChoice(txtUser.getText());
                 }
                 else
                     Message.showMessageDialog("登录失败",JOptionPane.OK_OPTION);
-
-            }
         });
-        btnCancel.addActionListener(new ActionListener()
+        btnCancel.addActionListener(e ->
         {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
                 txtUser.setText("");
                 txtPwd.setText("");
-            }
         });
         txtPwd.addKeyListener(new KeyAdapter()
-        {
+        {//press enter login
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                super.keyPressed(e);
+                if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                    btnLogin.doClick();
+            }
+        });
+        txtUser.addKeyListener(new KeyAdapter()
+        {//press enter login
             @Override
             public void keyPressed(KeyEvent e)
             {
@@ -73,18 +84,10 @@ public class FormLogin
         });
     }
 
-//    private static JFrame frameMain=new JFrame("FormMain")
-//    {
-//        @Override
-//        public void setContentPane(Container contentPane)
-//        {
-//            super.setContentPane(contentPane);
-//        }
-//    };
     private JPanel mainPanel;
     private JLabel label1;
     private JButton btnLogin;
     private JButton btnCancel;
     private JTextField txtUser;
-    private JTextField txtPwd;
+    private JPasswordField txtPwd;
 }

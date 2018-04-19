@@ -8,6 +8,7 @@ public class DB
 {
     private static String username="sa";
     private static String userpwd="123456";//暂且用这个sbPwd
+    private static Connection conn=null;
 
     private static Connection ConnDB()
     {
@@ -18,9 +19,9 @@ public class DB
             Class.forName(drivename);
 //            System.out.println("load jdbcdrive successful");
 //            System.out.println("conn start");
-            Connection conn=DriverManager.getConnection(dburl, username, userpwd);
+            Connection connn=DriverManager.getConnection(dburl, username, userpwd);
 
-            return conn;
+            return connn;
         }
         catch(Exception e)
         {
@@ -33,7 +34,7 @@ public class DB
     {
         try
         {
-            Connection conn=ConnDB();
+            conn=ConnDB();
             if (conn != null)
                 System.out.println("connection successful");
             else
@@ -49,6 +50,11 @@ public class DB
 //            System.out.println("DB.ReadDB-error");
 //            e.printStackTrace();
         }
+        finally
+        {
+            conn=null;
+        }
+
         return null;
     }
 
@@ -56,7 +62,7 @@ public class DB
     {
         try
         {
-            Connection conn=ConnDB();
+            conn=ConnDB();
             if (conn != null)
                 System.out.println("connection successful");
             else
@@ -71,6 +77,10 @@ public class DB
         {
 //            System.out.println("DB.ReadDB-error");
 //            e.printStackTrace();
+        }
+        finally
+        {
+            conn=null;
         }
 
         return 0;
